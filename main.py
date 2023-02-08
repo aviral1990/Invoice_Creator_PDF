@@ -23,8 +23,8 @@ for item in invoice_list:
     pdf.cell(w=60, h=8, txt='Product_name',align="C",border=1)
     pdf.cell(w=40, h=8, txt='Amount_purchased',align="C",border=1)
     pdf.cell(w=30, h=8, txt='Price_per_unit',align="C",border=1)
-    pdf.cell(w=30, h=8, txt='Total_price',align="C",border=1)
-    pdf.ln(10)
+    pdf.cell(w=30, h=8, txt='Total_price',align="C",border=1,ln=1)
+    #pdf.ln(10)
 
     #Read Excel and convert to pdf
     df = pd.read_excel(item, 'Sheet 1')
@@ -35,8 +35,8 @@ for item in invoice_list:
         pdf.cell(w=60, h=8, txt=row['product_name'],align="C",border=1)
         pdf.cell(w=40, h=8, txt=str(row['amount_purchased']),align="C",border=1)
         pdf.cell(w=30, h=8, txt=str(row['price_per_unit']),align="C",border=1)
-        pdf.cell(w=30, h=8, txt=str(row['total_price']),align="C",border=1)
-        pdf.ln(10)
+        pdf.cell(w=30, h=8, txt=str(row['total_price']),align="C",border=1,ln=1) #ln=1,after call,move to next line
+        #pdf.ln(10)
         total = total + float(row['total_price'])
 
     #Write the total
