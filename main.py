@@ -17,17 +17,19 @@ for item in invoice_list:
     pdf.ln(3)
     pdf.cell(w=0, h=3, txt=f"Date - {invoice_date[:-5]}", border=0, ln=1, align="L")
     pdf.ln(3)
-    #Column Headers
-    pdf.set_font(family="Times", style="B", size=12)
-    pdf.cell(w=30, h=8, txt='Product_id',align="C",border=1)
-    pdf.cell(w=60, h=8, txt='Product_name',align="C",border=1)
-    pdf.cell(w=40, h=8, txt='Amount_purchased',align="C",border=1)
-    pdf.cell(w=30, h=8, txt='Price_per_unit',align="C",border=1)
-    pdf.cell(w=30, h=8, txt='Total_price',align="C",border=1,ln=1)
-    #pdf.ln(10)
+
 
     #Read Excel and convert to pdf
     df = pd.read_excel(item, 'Sheet 1')
+    column_headers=list(df.columns)
+    # Column Headers
+    pdf.set_font(family="Times", style="B", size=12)
+    pdf.cell(w=30, h=8, txt=column_headers[0].title(), align="C", border=1)
+    pdf.cell(w=60, h=8, txt=column_headers[1].title(), align="C", border=1)
+    pdf.cell(w=40, h=8, txt=column_headers[2].title(), align="C", border=1)
+    pdf.cell(w=30, h=8, txt=column_headers[3].title(), align="C", border=1)
+    pdf.cell(w=30, h=8, txt=column_headers[4].title(), align="C", border=1, ln=1)
+    # pdf.ln(10)
     total = 0
     for index, row in df.iterrows():
         pdf.set_font(family="Times", size=12)
