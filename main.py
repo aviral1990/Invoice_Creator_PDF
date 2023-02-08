@@ -1,14 +1,17 @@
 import pandas as pd
-import os
+import glob
 PATH='E:\Tutorials\DOCUMENTS & SOURCE CODES\Python Projects Pycharm\Invoice_Creator'
 
-invoice_list=[]
+#get filepaths of excel files, and store in list
+invoice_list=glob.glob("Invoices/*.xlsx")
 
-#get file names of invoices in the folder
-for x in os.listdir():
-    if(x.endswith('.xlsx')):
-        invoice_list.append(x)
+print(invoice_list)
+
 
 for item in invoice_list:
-    df=pd.read_excel(item,index_col=0)
-    print(df)
+    df=pd.read_excel(item,'Sheet 1')
+    total=0
+    for index,row in df.iterrows():
+        print(row['total_price'])
+        total=total+float(row['total_price'])
+    print(total)
