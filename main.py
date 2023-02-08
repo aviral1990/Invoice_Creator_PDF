@@ -7,12 +7,6 @@ invoice_list=glob.glob("Invoices/*.xlsx")
 
 #Iterate through filepath
 for item in invoice_list:
-    df=pd.read_excel(item,'Sheet 1')
-    total=0
-    for index,row in df.iterrows():
-        print(row['total_price'])
-        total=total+float(row['total_price'])
-
     #create PDF invoice
     pdf=FPDF(orientation='P',unit='mm',format="A4")
     pdf.set_font(family="Times", style="B", size=12)
@@ -22,5 +16,31 @@ for item in invoice_list:
     pdf.cell(w=0, h=3, txt=f"Invoice No. - {invoice_no}", border=0, ln=1, align="L")
     pdf.ln(3)
     pdf.cell(w=0, h=3, txt=f"Date - {invoice_date[:-5]}", border=0, ln=1, align="L")
+    pdf.ln(3)
+    #Titles
+    pdf.set_font(family="Times", style="B", size=12)
+    pdf.cell(w=30, h=8, txt='Product_id',align="C")
+    pdf.cell(w=60, h=8, txt='Product_name',align="C")
+    pdf.cell(w=40, h=8, txt='Amount_purchased',align="C")
+    pdf.cell(w=30, h=8, txt='Price_per_unit',align="C")
+    pdf.cell(w=30, h=8, txt='Total_price',align="C")
+    pdf.ln(10)
+
     filename_output_pdf = item.split('\\')[1][:-5]
+
+    #Read Excel and convert to pdf
+    df = pd.read_excel(item, 'Sheet 1')
+    total = 0
+    for index, row in df.iterrows():
+        pdf.set_font(family="Times", size=12)
+        pdf.cell(w=30,h=8,txt=str(row['product_id']),align="C")
+        pdf.cell(w=60, h=8, txt=row['product_name'],align="C")
+        pdf.cell(w=40, h=8, txt=str(row['amount_purchased']),align="C")
+        pdf.cell(w=30, h=8, txt=str(row['price_per_unit']),align="C")
+        pdf.cell(w=30, h=8, txt=str(row['total_price']),align="C")
+        pdf.ln(10)
+        #print(row['total_price'])
+        #total = total + float(row['total_price'])
+
     pdf.output(f"PDFs/{filename_output_pdf}.pdf")
+
