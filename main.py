@@ -18,19 +18,22 @@ for item in invoice_list:
     pdf.cell(w=0, h=3, txt=f"Date - {invoice_date[:-5]}", border=0, ln=1, align="L")
     pdf.ln(3)
 
-
     #Read Excel and convert to pdf
     df = pd.read_excel(item, 'Sheet 1')
+    #Replace _ with space in column headers
     column_headers=list(df.columns)
-    # Column Headers
+    for x in range(len(column_headers)):
+        column_headers[x]=column_headers[x].replace('_'," ")
+
+    # Write Column Headers to PDF
     pdf.set_font(family="Times", style="B", size=12)
     pdf.cell(w=30, h=8, txt=column_headers[0].title(), align="C", border=1)
     pdf.cell(w=60, h=8, txt=column_headers[1].title(), align="C", border=1)
     pdf.cell(w=40, h=8, txt=column_headers[2].title(), align="C", border=1)
     pdf.cell(w=30, h=8, txt=column_headers[3].title(), align="C", border=1)
     pdf.cell(w=30, h=8, txt=column_headers[4].title(), align="C", border=1, ln=1)
-    # pdf.ln(10)
-    total = 0
+
+    total = 0       # To calculate total price
     for index, row in df.iterrows():
         pdf.set_font(family="Times", size=12)
         pdf.cell(w=30,h=8,txt=str(row['product_id']),align="C",border=1)
@@ -48,7 +51,7 @@ for item in invoice_list:
     pdf.set_font(family="Times", size=12,style="B")
     pdf.cell(w=30, h=8, txt='TOTAL', align="C",border=1)
     pdf.set_font(family="Times", size=12)
-    pdf.cell(w=30, h=8, txt=str(total), align="C",border=1)
+    pdf.cell(w=30, h=8, txt=(str(total)+" CAD"), align="C",border=1)
 
     filename_output_pdf = item.split('\\')[1][:-5]
     pdf.output(f"PDFs/{filename_output_pdf}.pdf")
