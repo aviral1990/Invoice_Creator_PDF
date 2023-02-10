@@ -24,6 +24,7 @@ for item in invoice_list:
     column_headers=list(df.columns)
     for x in range(len(column_headers)):
         column_headers[x]=column_headers[x].replace('_'," ")
+        #Or list comprehension--> column_headers=[ite.replace('_'," ") for ite in column_headers]
 
     # Write Column Headers to PDF
     pdf.set_font(family="Times", style="B", size=12)
@@ -44,14 +45,18 @@ for item in invoice_list:
         #pdf.ln(10)
         total = total + float(row['total_price'])
 
-    #Write the total
+    # Write the total
     pdf.cell(w=30, h=8, txt='', align="C")
     pdf.cell(w=60, h=8, txt='', align="C")
     pdf.cell(w=40, h=8, txt='', align="C")
     pdf.set_font(family="Times", size=12,style="B")
     pdf.cell(w=30, h=8, txt='TOTAL', align="C",border=1)
     pdf.set_font(family="Times", size=12)
-    pdf.cell(w=30, h=8, txt=(str(total)+" CAD"), align="C",border=1)
+    pdf.cell(w=30, h=8, txt=(str(total)+" CAD"), align="C",border=1,ln=1)
+
+
+    # Add signature (image)
+    pdf.image("sig.png",h=7)
 
     filename_output_pdf = item.split('\\')[1][:-5]
     pdf.output(f"PDFs/{filename_output_pdf}.pdf")
